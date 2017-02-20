@@ -43,6 +43,7 @@ $app->post('/', function ($request, $response)
 	$bot = new \LINE\LINEBot($httpClient, ['channelSecret' => $_ENV['CHANNEL_SECRET']]);
 
 	$data = json_decode($body, true);
+	file_put_contents('php://stderr', 'Body: '.$body);
 	foreach ($data['events'] as $event)
 	{
 		if ($event['type'] == 'message')
