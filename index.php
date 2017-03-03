@@ -43,15 +43,22 @@ $app->post('/', function ($request, $response)
 	$bot = new \LINE\LINEBot($httpClient, ['channelSecret' => $_ENV['CHANNEL_SECRET']]);
 
 	$data = json_decode($body, true);
-	file_put_contents('php://stderr', 'Body: '.$body);
+
 	foreach ($data['events'] as $event)
 	{
 		if ($event['type'] == 'message')
 		{
 			if($event['message']['type'] == 'text')
 			{
-				// send same message as reply to user
-				$result = $bot->replyText($event['replyToken'], $event['message']['text']);
+				if ($event['message']['text'] == 'sitta ini')
+				{
+					$replyMessage = 'kadang-kadang tak ada logika';
+				}
+				else
+				{
+					$replyMessage = $event['message']['text'];
+				}
+				$result = $bot->replyText($event['replyToken'], $replyMessage);
 
 				// or we can use pushMessage() instead to send reply message
 				// $textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($event['message']['text']);
